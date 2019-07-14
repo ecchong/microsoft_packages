@@ -1,0 +1,54 @@
+---
+# Install Microsoft repo and packages
+# Required:
+# - microsoft_packages_list
+#
+# Example:
+#  - name: install mssql-cli
+#    include_role:
+#      name: microsoft_packages
+#    vars:
+#      microsoft_packages_list:
+#      - mssql-cli
+
+- name: Check required variables
+  assert:
+    that:
+    - microsoft_packages_list is defined
+    fail_msg: "Please defined all required variables."
+
+- name: Check current installed gpg keys
+  command: rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n'
+  args:
+    warn: false
+  become: True
+  register: gpg_keys_output
+
+- name: Download and install Microsoft repository key if not already installed
+  command: rpm --import {{ microsoft_packages_repository_key }}
+  args:
+    warn: false
+  become: True
+  when: not gpg_keys_output.stdout | regex_search('gpgsecurity@microsoft.com')
+
+- name: Add Microsoft repository
+  yum_repository:
+    name: packages-microsoft-com-prod
+    description: packages-microsoft-com-prod
+    baseurl: "{{ microsoft_packages_rhel_repo }}"
+    enabled: yes
+    gpgkey: "{{ microsoft_packages_repository_key }}"
+    gpgcheck: yes
+  notify: yum-clean-metadata
+  become: true
+  become_user: root
+
+- name: Install Microsoft packages
+  yum:
+    name: "{{ microsoft_packages_list }}"
+    state: present
+  when: microsoft_packages_list is defined
+  environment:
+    ACCEPT_EULA: 'y'
+  become: true
+  become_user: root
