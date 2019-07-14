@@ -23,6 +23,7 @@
     warn: false
   become: True
   register: gpg_keys_output
+  changed_when: false
 
 - name: Download and install Microsoft repository key if not already installed
   command: rpm --import {{ microsoft_packages_repository_key }}

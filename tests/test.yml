@@ -1,0 +1,9 @@
+---
+- hosts: test
+  remote_user: root
+  tasks:
+  - include_role:
+      name: microsoft_packages
+    vars:
+      microsoft_packages_list:
+      - mssql-cli
