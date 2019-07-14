@@ -12,7 +12,10 @@ galaxy_info:
 
   galaxy_tags:
   - microsoft
-  - mssql
+  - centos
+  - rhel
   - system
+  - repo
+  - repository
 
 dependencies: []
