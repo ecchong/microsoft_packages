@@ -1,6 +1,8 @@
 ---
-- hosts: test
-  remote_user: root
+- hosts: localhost
+  connection: local
+  become: true
+
   tasks:
   - include_role:
       name: microsoft_packages
