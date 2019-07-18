@@ -21,7 +21,9 @@ install:
 
 script:
 - container_id=$(mktemp)
-- 'sudo docker run --detach --volume="${PWD}":ecchong/microsoft_packages:ro ${distribution}:${version} "init" > "${container_id}"'
+- pwd
+- ls -l
+- 'docker run --detach --volume="${PWD}":ecchong/microsoft_packages:ro ${distribution}:${version} "init" > "${container_id}"'
 - >
   sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm
   ansible-playbook ecchong/microsoft_packages/tests/test.yml --syntax-check
