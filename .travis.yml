@@ -7,7 +7,8 @@ python: "2.7"
 env:
 - distribution: centos
   version: 7
-  init: /lib/systemd/systemd
+- distribution: fedora
+  version: 26
 
 services:
 - docker
