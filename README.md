@@ -36,5 +36,5 @@ Author Information
 ------------------
 
 Eric Chong
-ecchong@gmail.com
-echong@redhat.com
+- ecchong@gmail.com
+- echong@redhat.com
